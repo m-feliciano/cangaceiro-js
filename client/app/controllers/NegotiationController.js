@@ -5,7 +5,9 @@ class NegotiationController {
 		this._inputQuantity = $("#quantity");
 		this._inputValue = $("#value");
 
-		this._negotiations = new Negotiations();
+		this._negotiations = new Negotiations((model) =>
+			this._negotiationsView.update(model)
+		);
 		this._negotiationsView = new NegotiationsView("#negotiations");
 		this._negotiationsView.update(this._negotiations);
 
@@ -17,7 +19,6 @@ class NegotiationController {
 	add(event) {
 		event.preventDefault();
 		this._negotiations.add(this._createNegotiation());
-		this._negotiationsView.update(this._negotiations);
 		this._message.text = "Trading successfully added";
 		this._messageView.update(this._message);
 		this._clearForm();
@@ -36,5 +37,11 @@ class NegotiationController {
 			parseInt(this._inputQuantity.value),
 			parseFloat(this._inputValue.value)
 		);
+	}
+
+	delete() {
+		this._negotiations.clear();
+		this._message.text = "Successfully deleted trades";
+		this._messageView.update(this._message);
 	}
 }

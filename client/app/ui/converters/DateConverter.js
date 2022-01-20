@@ -1,4 +1,4 @@
-class DataConverter {
+class DateConverter {
 	constructor() {
 		throw new Error("WARN: This class cannot be instantiated!");
 	}

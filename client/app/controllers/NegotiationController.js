@@ -4,20 +4,27 @@ class NegotiationController {
 		this._inputDate = $("#date");
 		this._inputQuantity = $("#quantity");
 		this._inputValue = $("#value");
+		this._negotiations = new Negotiations();
 	}
 
 	add(event) {
 		event.preventDefault();
+		this._negotiations.add(this._createNegotiation());
+		this._clearForm();
+	}
 
-        let date = DataConverter.toDate(this._inputDate.value);
-        
-        let negotiation = new Negotiation(
-			date,
+	_clearForm() {
+		this._inputDate.value = "";
+		this._inputQuantity.value = 1;
+		this._inputValue.value = 0.0;
+		this._inputDate.focus();
+	}
+
+	_createNegotiation() {
+		return new Negotiation(
+			DateConverter.toDate(this._inputDate.value),
 			parseInt(this._inputQuantity.value),
 			parseFloat(this._inputValue.value)
 		);
-
-        let diaMesAno = DataConverter.toText(negotiation.date);
-		console.log(diaMesAno, date);
 	}
 }

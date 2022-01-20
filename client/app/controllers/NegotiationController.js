@@ -5,11 +5,14 @@ class NegotiationController {
 		this._inputQuantity = $("#quantity");
 		this._inputValue = $("#value");
 		this._negotiations = new Negotiations();
+		this._negotiationsView = new NegotiationsView("#negotiations");
+        this._negotiationsView.update(this._negotiations);
 	}
 
 	add(event) {
 		event.preventDefault();
 		this._negotiations.add(this._createNegotiation());
+		this._negotiationsView.update(this._negotiations);
 		this._clearForm();
 	}
 

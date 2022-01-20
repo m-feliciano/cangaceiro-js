@@ -1,18 +1,25 @@
 class NegotiationController {
 	constructor() {
-		let $ = document.querySelector.bind(document);
+		const $ = document.querySelector.bind(document);
 		this._inputDate = $("#date");
 		this._inputQuantity = $("#quantity");
 		this._inputValue = $("#value");
+
 		this._negotiations = new Negotiations();
 		this._negotiationsView = new NegotiationsView("#negotiations");
-        this._negotiationsView.update(this._negotiations);
+		this._negotiationsView.update(this._negotiations);
+
+		this._message = new Message();
+		this._messageView = new MessageView("#messageView");
+		this._messageView.update(this._message);
 	}
 
 	add(event) {
 		event.preventDefault();
 		this._negotiations.add(this._createNegotiation());
 		this._negotiationsView.update(this._negotiations);
+		this._message.text = "Trading successfully added";
+		this._messageView.update(this._message);
 		this._clearForm();
 	}
 

@@ -1,12 +1,10 @@
 class Negotiations {
-	constructor(trigger) {
+	constructor() {
 		this._negotiations = [];
-		this._trigger = trigger;
 		Object.freeze(this);
 	}
 	add(negotiation) {
 		this._negotiations.push(negotiation);
-		this._trigger(this);
 	}
 
 	toArray() {
@@ -19,6 +17,5 @@ class Negotiations {
 	}
 	clear() {
 		this._negotiations.length = 0;
-		this._trigger(this);
 	}
 }

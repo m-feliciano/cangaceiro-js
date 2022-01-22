@@ -11,13 +11,13 @@ class NegotiationController {
 		this._negotiations = new Bind(
 			new Negotiations(),
 			new NegotiationsView("#negotiations"),
-			["add", "clear"]
+			"add", "clear"
 		);
 
 		this._message = new Bind(
 			new Message(), 
-			new MessageView("#messageView")
-			["text"]
+			new MessageView("#messageView"),
+			"text"
 		);
 	}
 

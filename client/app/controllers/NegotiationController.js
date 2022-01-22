@@ -7,36 +7,24 @@ class NegotiationController {
 
 		const self = this;
 
-		this._negotiations = new Proxy(new Negotiations(), {
-			get(target, prop, receiver) {
-				if (
-					typeof target[prop] == typeof Function &&
-					["add", "clear"].includes(prop)
-				) {
-					return function () {
-						console.log(`${prop} trigged`);
-						target[prop].apply(target, arguments);
-						self._negotiationsView.update(target);
-					};
-				} else {
-					return target[prop];
-				}
-			},
-		});
+		//	criating a new Proxy with support of fabric
+		this._negotiations = new Bind(
+			new Negotiations(),
+			new NegotiationsView("#negotiations"),
+			["add", "clear"]
+		);
 
-		this._negotiationsView = new NegotiationsView("#negotiations");
-		this._negotiationsView.update(this._negotiations);
-
-		this._message = new Message();
-		this._messageView = new MessageView("#messageView");
-		this._messageView.update(this._message);
+		this._message = new Bind(
+			new Message(), 
+			new MessageView("#messageView")
+			["text"]
+		);
 	}
 
 	add(event) {
 		event.preventDefault();
 		this._negotiations.add(this._createNegotiation());
 		this._message.text = "Trading successfully added";
-		this._messageView.update(this._message);
 		this._clearForm();
 	}
 
@@ -58,6 +46,5 @@ class NegotiationController {
 	delete() {
 		this._negotiations.clear();
 		this._message.text = "Successfully deleted trades";
-		this._messageView.update(this._message);
 	}
 }

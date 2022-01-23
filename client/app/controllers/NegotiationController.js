@@ -11,21 +11,32 @@ class NegotiationController {
 		this._negotiations = new Bind(
 			new Negotiations(),
 			new NegotiationsView("#negotiations"),
-			"add", "clear"
+			"add",
+			"clear"
 		);
 
 		this._message = new Bind(
-			new Message(), 
+			new Message(),
 			new MessageView("#messageView"),
 			"text"
 		);
 	}
 
 	add(event) {
-		event.preventDefault();
-		this._negotiations.add(this._createNegotiation());
-		this._message.text = "Trading successfully added";
-		this._clearForm();
+		try {
+			event.preventDefault();
+			this._negotiations.add(this._createNegotiation());
+			this._message.text = "Trading successfully added";
+			this._clearForm();
+		} catch (err) {
+			console.log(err);
+
+			if(err instanceof DateInvalidException){
+				this._message.text = err.message;
+			} else {
+				this._message.text = 'An unexpected error has occurred you. Contact support ';
+			}
+		}
 	}
 
 	_clearForm() {

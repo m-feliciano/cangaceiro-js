@@ -16,20 +16,20 @@ class NegotiationsView extends View {
 			.toArray()
 			.map(
 				(negotiation) => `
-                <tr>
-                    <td>${DateConverter.toText(negotiation.date)}</td>
+                <tr align="right">
+                    <td align="center">${DateConverter.toText(negotiation.date)}</td>
                     <td>${negotiation.quantity}</td>
-                    <td>${negotiation.value}</td>
-                    <td>${negotiation.volume}</td>
+                    <td>${negotiation.value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</td>
+                    <td>${negotiation.volume.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</td>
                 </tr>`
 			)
 			.join("")}
         </tbody>
         
         <tfoot>
-        <tr>
-            <td	colspan="3">TOTAL</td>
-            <td>${model.volumeTotal}</td>
+        <tr align="center">
+            <td	colspan="3"><strong>TOTAL</strong></td>
+            <td align="right"><strong>${model.volumeTotal.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</strong></td>
 			</tr>
         </tfoot>
     </table>`;

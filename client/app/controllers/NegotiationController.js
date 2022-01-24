@@ -5,8 +5,6 @@ class NegotiationController {
 		this._inputQuantity = $("#quantity");
 		this._inputValue = $("#value");
 
-		const self = this;
-
 		//	criating a new Proxy with support of fabric
 		this._negotiations = new Bind(
 			new Negotiations(),
@@ -63,15 +61,15 @@ class NegotiationController {
 	}
 
 	importNegotiations() {
-		this._service.getNegotiationsFromWeek((err, negotiations) => {
-			if (err) {
-				this._message.text = "Unable to get weekly trades";
-				return;
-			}
-			negotiations.forEach((negotiation) =>
-				this._negotiations.add(negotiation)
-			);
-			this._message.text = "Trades successfully imported";
-		});
+		this._service
+			.getNegotiationsByPeriod()
+			.then((negotiations) => {
+				negotiations.forEach((negotiation) =>
+					this._negotiations.add(negotiation)
+				);
+				this._message.text =
+					"Successfully imported negotiations by period";
+			})
+			.catch((err) => (this._message.text = err));
 	}
 }

@@ -1,23 +1,61 @@
 class NegotiationService {
-	getNegotiationsFromWeek(cb) {
-		const xhr = new XMLHttpRequest();
-		xhr.open("GET", `http://localhost:3000/negotiations/week`);
-		xhr.onreadystatechange = () => {
-			if (xhr.readyState == 4 && xhr.status == 200) {
-				console.log("Getting negotiations from server...");
-				const negotiations = JSON.parse(xhr.responseText).map(
-					(obj) =>
-						new Negotiation(
-							new Date(obj.date),
-							obj.quantity,
-							obj.value
-						)
-				);
-				cb(null, negotiations);
-			} else {
-				cb("Cannot getting week negotiations", null);
+	constructor() {
+		this._http = new HttpService();
+		this._baseUrl = "http://localhost:3000/negotiations";
+	}
+
+	getNegotiationsByWeek() {
+		return this._http.get(`${this._baseUrl}/week`).then(
+			(data) => {
+				return this.instanteNegotiation(data);
+			},
+			() => {
+				throw new Error("Unable to get trades from week");
 			}
-		};
-		xhr.send();
+		);
+	}
+
+	getNegotiationsByLastWeek() {
+		return this._http.get(`${this._baseUrl}/lastweek`).then(
+			(data) => {
+				return this.instanteNegotiation(data);
+			},
+			() => {
+				throw new Error("Unable to get trades from last week");
+			}
+		);
+	}
+
+	getNegotiationsByBeforeLastWeek() {
+		return this._http.get(`${this._baseUrl}/beforelastweek`).then(
+			(data) => {
+				return this.instanteNegotiation(data);
+			},
+			() => {
+				throw new Error("Unable to get trades from before last week");
+			}
+		);
+	}
+
+	instanteNegotiation(data) {
+		return data.map(
+			(obj) =>
+				new Negotiation(new Date(obj.date), obj.quantity, obj.value)
+		);
+	}
+
+	getNegotiationsByPeriod() {
+		return Promise.all([
+			this.getNegotiationsByWeek(),
+			this.getNegotiationsByLastWeek(),
+			this.getNegotiationsByBeforeLastWeek(),
+		])
+			.then((period) => {
+				return period.reduce((newArray, item) => newArray.concat(item), []);
+			})
+			.catch((err) => {
+				console.log(err);
+				throw new Error("Unable to get negotiations by period");
+			});
 	}
 }

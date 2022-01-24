@@ -20,6 +20,8 @@ class NegotiationController {
 			new MessageView("#messageView"),
 			"text"
 		);
+
+		this._service = new NegotiationService();
 	}
 
 	add(event) {
@@ -31,10 +33,11 @@ class NegotiationController {
 		} catch (err) {
 			console.log(err);
 
-			if(err instanceof DateInvalidException){
+			if (err instanceof DateInvalidException) {
 				this._message.text = err.message;
 			} else {
-				this._message.text = 'An unexpected error has occurred you. Contact support ';
+				this._message.text =
+					"An unexpected error has occurred you. Contact support ";
 			}
 		}
 	}
@@ -57,5 +60,18 @@ class NegotiationController {
 	delete() {
 		this._negotiations.clear();
 		this._message.text = "Successfully deleted trades";
+	}
+
+	importNegotiations() {
+		this._service.getNegotiationsFromWeek((err, negotiations) => {
+			if (err) {
+				this._message.text = "Unable to get weekly trades";
+				return;
+			}
+			negotiations.forEach((negotiation) =>
+				this._negotiations.add(negotiation)
+			);
+			this._message.text = "Trades successfully imported";
+		});
 	}
 }

@@ -1,58 +1,53 @@
-/* Código simplório, apenas para fornecer o serviço para a aplicação */
-var api = {}
+const api = {};
 
-var dataAtual = new Date();
-var dataAnterior = new Date();
-dataAnterior.setDate(dataAtual.getDate() - 7);
-var dateRetrasada = new Date();
-dateRetrasada.setDate(dataAtual.getDate() - 14);
+const today = new Date();
+const lastDate = new Date();
+lastDate.setDate(today.getDate() - 7);
+const beforeLastDate = new Date();
+beforeLastDate.setDate(today.getDate() - 14);
 
-var negociacoes = [
-      { data : dataAtual, quantidade : 1, valor : 150},
-      { data : dataAtual, quantidade : 2, valor : 250},
-      { data : dataAtual, quantidade : 3, valor : 350},
-      { data : dataAnterior, quantidade : 1, valor : 450},
-      { data : dataAnterior, quantidade : 2, valor : 550},
-      { data : dataAnterior, quantidade : 3, valor : 650},
-      { data : dateRetrasada, quantidade : 1, valor : 750},
-      { data : dateRetrasada, quantidade : 2, valor : 950},
-      { data : dateRetrasada, quantidade : 3, valor : 950}
-    ];
+const negotiations = [
+	{ date: today, quantity: 1, value: 150 },
+	{ date: today, quantity: 2, value: 250 },
+	{ date: today, quantity: 3, value: 350 },
+	{ date: lastDate, quantity: 1, value: 450 },
+	{ date: lastDate, quantity: 2, value: 550 },
+	{ date: lastDate, quantity: 3, value: 650 },
+	{ date: beforeLastDate, quantity: 1, value: 750 },
+	{ date: beforeLastDate, quantity: 2, value: 950 },
+	{ date: beforeLastDate, quantity: 3, value: 950 },
+];
 
-
-api.listaSemana = function(req, res) {
-    var negociacoesAtuais = negociacoes.filter(function(negociacao) {
-        return negociacao.data > dataAnterior;
-    });
-    res.json(negociacoesAtuais);
+api.week = function (req, res) {
+	const object = negotiations.filter(
+		(negotiation) => negotiation.date > lastDate
+	);
+	res.json(object);
 };
 
-api.listaAnterior = function(req, res) {
-   
-   var negociacoesAnteriores = negociacoes.filter(function(negociacao) {
-        return negociacao.data < dataAtual && negociacao.data > dateRetrasada;
-    });
-	setTimeout(function() {
-		res.json(negociacoesAnteriores);	
+api.lastweek = function (req, res) {
+	const object = negotiations.filter(
+		(negotiation) =>
+			negotiation.date < today && negotiation.date > beforeLastDate
+	);
+	setTimeout(function () {
+		res.json(object);
 	}, 500);
-    
 };
 
-api.listaRetrasada = function(req, res) {
-
-   var negociacoesRtrasadas = negociacoes.filter(function(negociacao) {
-        return negociacao.data < dataAnterior;
-    });
-    res.json(negociacoesRtrasadas);
-    
+api.beforelastweek = function (req, res) {
+	const object = negotiations.filter(
+		(negotiation) => negotiation.date < lastDate
+	);
+	res.json(object);
 };
 
-api.cadastraNegociacao = function(req, res) {
-   req.body._data = new Date(req.body._data);
-   console.log('Dado recebido via POST:')
-   console.log(req.body);
-   negociacoes.push(req.body);
-   res.status(200).json("Negociação recebida");
+api.insertNegotiation = function (req, res) {
+	req.body._date = new Date(req.body._date);
+	console.log("Date received via POST:");
+	console.log(req.body);
+	negotiations.push(req.body);
+	res.status(200).json("Negotiations received");
 };
 
 module.exports = api;

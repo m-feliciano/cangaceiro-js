@@ -13,7 +13,7 @@ const ConnectionFactory = (() => {
 		static getConnection() {
 			return new Promise((resolve, reject) => {
 				if (connection) return resolve(connection);
-				const openRequest = indexedDB.open("jscangaceiro", 2);
+				const openRequest = indexedDB.open("cangaceirojs", 2);
 				openRequest.onupgradeneeded = (e) => {
 					stores.forEach((store) => {
 						ConnectionFactory._createStores(e.target.result);

@@ -20,14 +20,35 @@ class NegotiationController {
 		);
 
 		this._service = new NegotiationService();
+
+		this._init();
+	}
+
+	_init() {
+		DaoFactory.getNegotiationDAO()
+			.then((dao) => dao.listAll())
+			.then((negotiations) =>
+				negotiations.forEach((negotiation) =>
+					this._negotiations.add(negotiation)
+				)
+			)
+			.catch((err) => (this._mensagem.texto = err));
 	}
 
 	add(event) {
 		try {
 			event.preventDefault();
-			this._negotiations.add(this._createNegotiation());
-			this._message.text = "Trading successfully added";
-			this._clearForm();
+
+			const negotiation = this._createNegotiation();
+
+			DaoFactory.getNegotiationDAO()
+				.then((dao) => dao.add(negotiation))
+				.then(() => {
+					this._negotiations.add(this._createNegotiation());
+					this._message.text = "Trading successfully added";
+					this._clearForm();
+				})
+				.catch((err) => (this._message.text = err));
 		} catch (err) {
 			console.log(err);
 
@@ -56,20 +77,33 @@ class NegotiationController {
 	}
 
 	delete() {
-		this._negotiations.clear();
-		this._message.text = "Successfully deleted trades";
+		DaoFactory.getNegotiationDAO()
+			.then((dao) => dao.deleteAll())
+			.then(() => {
+				this._negotiations.clear();
+				this._message.text = "Successfully deleted trades";
+			})
+			.catch((err) => (this._message.text = "Successfully deleted all negotiaions"));
 	}
 
 	importNegotiations() {
 		this._service
 			.getNegotiationsByPeriod()
-			.then(negotiations => { negotiations
-				.filter(newNegotiation => !this._negotiations.toArray()
-					.some(exists => newNegotiation.equals(exists)))
-					.forEach(negotiation =>	this._negotiations.add(negotiation));
+			.then((negotiations) => {
+				negotiations
+					.filter(
+						(newNegotiation) =>
+							!this._negotiations
+								.toArray()
+								.some((exists) => newNegotiation.equals(exists))
+					)
+					.forEach((negotiation) =>
+						this._negotiations.add(negotiation)
+					);
 
-				this._message.text = "Successfully imported negotiations by period";
-			}
-			).catch((err) => (this._message.text = err));
+				this._message.text =
+					"Successfully imported negotiations by period";
+			})
+			.catch((err) => (this._message.text = err));
 	}
 }

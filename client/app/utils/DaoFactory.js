@@ -1,8 +1,7 @@
-class DaoFactory {
-	static async getNegotiationDAO() {
-		const conn = await ConnectionFactory.getConnection();
-		return new NegotiationDAO(conn);
-	}
+function getNegotiationDAO() {
+	return ConnectionFactory.getConnection().then(
+		(conn) => new NegotiationDAO(conn)
+	);
 }
 
 // ON CONSOLE

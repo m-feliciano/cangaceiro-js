@@ -41,7 +41,7 @@ class NegotiationController {
 
 			const negotiation = this._createNegotiation();
 
-			DaoFactory.getNegotiationDAO()
+			getNegotiationDAO()
 				.then((dao) => dao.add(negotiation))
 				.then(() => {
 					this._negotiations.add(this._createNegotiation());
@@ -77,13 +77,17 @@ class NegotiationController {
 	}
 
 	delete() {
-		DaoFactory.getNegotiationDAO()
+		getNegotiationDAO()
 			.then((dao) => dao.deleteAll())
 			.then(() => {
 				this._negotiations.clear();
 				this._message.text = "Successfully deleted trades";
 			})
-			.catch((err) => (this._message.text = "Successfully deleted all negotiaions"));
+			.catch(
+				(err) =>
+					(this._message.text =
+						"Successfully deleted all negotiaions")
+			);
 	}
 
 	importNegotiations() {

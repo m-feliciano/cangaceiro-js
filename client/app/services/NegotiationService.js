@@ -50,9 +50,10 @@ class NegotiationService {
 			this.getNegotiationsByLastWeek(),
 			this.getNegotiationsByBeforeLastWeek(),
 		])
-			.then((period) => {
-				return period.reduce((newArray, item) => newArray.concat(item), []);
-			})
+			.then((period) =>
+				period.reduce((newArray, item) => newArray.concat(item), [])
+					.sort((a, b) => b.date.getTime() - a.date.getTime())
+			)
 			.catch((err) => {
 				console.log(err);
 				throw new Error("Unable to get negotiations by period");

@@ -63,13 +63,13 @@ class NegotiationController {
 	importNegotiations() {
 		this._service
 			.getNegotiationsByPeriod()
-			.then((negotiations) => {
-				negotiations.forEach((negotiation) =>
-					this._negotiations.add(negotiation)
-				);
-				this._message.text =
-					"Successfully imported negotiations by period";
-			})
-			.catch((err) => (this._message.text = err));
+			.then(negotiations => { negotiations
+				.filter(newNegotiation => !this._negotiations.toArray()
+					.some(exists => newNegotiation.equals(exists)))
+					.forEach(negotiation =>	this._negotiations.add(negotiation));
+
+				this._message.text = "Successfully imported negotiations by period";
+			}
+			).catch((err) => (this._message.text = err));
 	}
 }

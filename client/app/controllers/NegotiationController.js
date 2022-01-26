@@ -25,7 +25,7 @@ class NegotiationController {
 	}
 
 	_init() {
-		DaoFactory.getNegotiationDAO()
+		getNegotiationDAO()
 			.then((dao) => dao.listAll())
 			.then((negotiations) =>
 				negotiations.forEach((negotiation) =>

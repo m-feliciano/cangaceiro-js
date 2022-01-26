@@ -1,27 +1,39 @@
-class Negotiation {
-	constructor(_date, _quantity, _value) {
-		Object.assign(this, { _quantity, _value });
-		this._date = new Date(_date.getTime());
-		Object.freeze(this);
-	}
+System.register([], function (_export, _context) {
+	"use strict";
 
-	get volume() {
-		return this._quantity * this._value;
-	}
+	return {
+		setters: [],
+		execute: function () {
+			class Negotiation {
+				constructor(_date, _quantity, _value) {
+					Object.assign(this, { _quantity, _value });
+					this._date = new Date(_date.getTime());
+					Object.freeze(this);
+				}
 
-	get date() {
-		return new Date(this._date.getTime());
-	}
+				get volume() {
+					return this._quantity * this._value;
+				}
 
-	get quantity() {
-		return this._quantity;
-	}
+				get date() {
+					return new Date(this._date.getTime());
+				}
 
-	get value() {
-		return this._value;
-	}
+				get quantity() {
+					return this._quantity;
+				}
 
-	equals(negotiation) {
-		return JSON.stringify(this) === JSON.stringify(negotiation);
-	}
-}
+				get value() {
+					return this._value;
+				}
+
+				equals(negotiation) {
+					return JSON.stringify(this) === JSON.stringify(negotiation);
+				}
+			}
+
+			_export("default", Negotiation);
+		}
+	};
+});
+//# sourceMappingURL=Negotiation.js.map

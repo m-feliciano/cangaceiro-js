@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<title>Trading | Home</title>
-		<link
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width"/>
+	<title>Trading | Home</title>
+	<link
 			rel="stylesheet"
 			type="text/css"
 			href="css/styles.css"
 			media="screen"
-		/>
+	/>
 	</head>
 
 	<body class="container">
@@ -68,44 +68,19 @@
 				Import Negotiation
 			</button>
 			<button
-				id="button-delete"
-				class="btn btn-primary text-center"
-				type="button"
+					id="button-delete"
+					class="btn btn-primary text-center"
+					type="button"
 			>
 				Delete
 			</button>
 		</div>
-		<br />
-		<br />
+		<br/>
+		<br/>
 		<div id="negotiations"></div>
-
-		<script	type="text/javascript"
-			src="./app/models/negotiation/Negotiation.js"></script>
-		<script type="text/javascript"
-			src="./app/controllers/NegotiationController.js"></script>
-		<script type=" text/javascript"
-			src="app/utils/DateConverter.js"></script>
-		<script type=" text/javascript"
-			src="app/models/negotiation/Negotiations.js"></script>
-
-		<script type=" text/javascript" src="app/views/View.js"></script>
-		
-		<script type=" text/javascript"
-			src="app/views/NegotiationsView.js"></script>
-		<script type=" text/javascript" src="app/models/Message.js">
+		<script src="node_modules/systemjs/dist/system.js"></script>
+		<script type="module">
+			System.import('./app/app.js')
 		</script>
-		<script type=" text/javascript" src="app/views/MessageView.js">
-		</script>
-		<script type=" text/javascript"	src="app/utils/ProxyFactory.js"></script>
-		<script	type=" text/javascript" src="app/utils/Bind.js"></script>
-		<script	src="app/utils/exceptions/ApplicationException.js"></script>
-		<script	type=" text/javascript" src="app/utils/exceptions/DateInvalidException.js"></script>
-		<script	type=" text/javascript" src="app/services/NegotiationService.js"></script>
-		<script	type=" text/javascript" src="app/utils/HttpService.js"></script>
-		<script	type=" text/javascript" src="app/utils/ConnectionFactory.js"></script>
-		<script	type=" text/javascript" src="app/models/negotiation/NegotiationDAO.js"></script>
-		<script	type=" text/javascript" src="app/utils/DaoFactory.js"></script>
-		
-		<script type=" text/javascript" src="./app/app.js"></script>
 	</body>
 </html>

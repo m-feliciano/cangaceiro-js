@@ -1,11 +1,20 @@
-const ctrl = new NegotiationController();
-const $ = document.querySelector.bind(document);
+System.register(["./controllers/NegotiationController"], function (_export, _context) {
+  "use strict";
 
-$(".form").addEventListener(
-	"submit", ctrl.add.bind(ctrl));
+  var NegotiationController;
+  return {
+    setters: [function (_controllersNegotiationController) {
+      NegotiationController = _controllersNegotiationController.default;
+    }],
+    execute: function () {
 
-$("#button-delete").addEventListener(
-	"click", ctrl.delete.bind(ctrl));
+      const ctrl = new NegotiationController(),
+            $ = document.querySelector.bind(document);
 
-$("#import-button").addEventListener(
-	"click", ctrl.importNegotiations.bind(ctrl));
+      $(".form").addEventListener("submit", ctrl.add.bind(ctrl));
+      $("#button-delete").addEventListener("click", ctrl.delete.bind(ctrl));
+      $("#import-button").addEventListener("click", ctrl.importNegotiations.bind(ctrl));
+    }
+  };
+});
+//# sourceMappingURL=app.js.map

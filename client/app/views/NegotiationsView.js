@@ -1,6 +1,15 @@
-class NegotiationsView extends View {
-	template(model) {
-		return `
+System.register(["./View"], function (_export, _context) {
+    "use strict";
+
+    var View;
+    return {
+        setters: [function (_View) {
+            View = _View.default;
+        }],
+        execute: function () {
+            class NegotiationsView extends View {
+                template(model) {
+                    return `
         <table class="table table-hover table-bordered">
         <thead>
             <tr>
@@ -12,18 +21,13 @@ class NegotiationsView extends View {
         </thead>
 
         <tbody>
-        ${model
-			.toArray()
-			.map(
-				(negotiation) => `
+        ${model.toArray().map(negotiation => `
                 <tr align="right">
                     <td align="center">${DateConverter.toText(negotiation.date)}</td>
                     <td>${negotiation.quantity}</td>
                     <td>${negotiation.value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</td>
                     <td>${negotiation.volume.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</td>
-                </tr>`
-			)
-			.join("")}
+                </tr>`).join("")}
         </tbody>
         
         <tfoot>
@@ -33,5 +37,11 @@ class NegotiationsView extends View {
 			</tr>
         </tfoot>
     </table>`;
-	}
-}
+                }
+            }
+
+            _export("default", NegotiationsView);
+        }
+    };
+});
+//# sourceMappingURL=NegotiationsView.js.map

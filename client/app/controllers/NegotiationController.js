@@ -5,12 +5,11 @@ class NegotiationController {
 		this._inputQuantity = $("#quantity");
 		this._inputValue = $("#value");
 
-		//	criating a new Proxy with support of fabric
+		//	creating a new Proxy with support of fabric
 		this._negotiations = new Bind(
 			new Negotiations(),
 			new NegotiationsView("#negotiations"),
-			"add",
-			"clear"
+			"add", "clear"
 		);
 
 		this._message = new Bind(
@@ -32,7 +31,7 @@ class NegotiationController {
 					this._negotiations.add(negotiation)
 				)
 			)
-			.catch((err) => (this._mensagem.texto = err));
+			.catch((err) => (this._message.text = err));
 	}
 
 	add(event) {

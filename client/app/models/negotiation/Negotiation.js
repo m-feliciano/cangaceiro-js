@@ -22,6 +22,6 @@ class Negotiation {
 	}
 
 	equals(negotiation) {
-		return JSON.stringify(this) == JSON.stringify(negotiation);
+		return JSON.stringify(this) === JSON.stringify(negotiation);
 	}
 }

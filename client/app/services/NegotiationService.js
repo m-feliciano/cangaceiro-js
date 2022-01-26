@@ -7,7 +7,7 @@ class NegotiationService {
 	getNegotiationsByWeek() {
 		return this._http.get(`${this._baseUrl}/week`).then(
 			(data) => {
-				return this.instanteNegotiation(data);
+				return this._instantiateNegotiation(data);
 			},
 			() => {
 				throw new Error("Unable to get trades from week");
@@ -18,7 +18,7 @@ class NegotiationService {
 	getNegotiationsByLastWeek() {
 		return this._http.get(`${this._baseUrl}/lastweek`).then(
 			(data) => {
-				return this.instanteNegotiation(data);
+				return this._instantiateNegotiation(data);
 			},
 			() => {
 				throw new Error("Unable to get trades from last week");
@@ -29,7 +29,7 @@ class NegotiationService {
 	getNegotiationsByBeforeLastWeek() {
 		return this._http.get(`${this._baseUrl}/beforelastweek`).then(
 			(data) => {
-				return this.instanteNegotiation(data);
+				return this._instantiateNegotiation(data);
 			},
 			() => {
 				throw new Error("Unable to get trades from before last week");
@@ -37,7 +37,7 @@ class NegotiationService {
 		);
 	}
 
-	instanteNegotiation(data) {
+	_instantiateNegotiation(data) {
 		return data.map(
 			(obj) =>
 				new Negotiation(new Date(obj.date), obj.quantity, obj.value)

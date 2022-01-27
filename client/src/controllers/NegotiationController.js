@@ -3,18 +3,24 @@ import Negotiations from "../models/negotiation/Negotiations";
 import MessageView from "../views/MessageView";
 import Message from "../models/Message";
 import NegotiationService from "../services/NegotiationService";
-import { getNegotiationDAO } from "../utils/DaoFactory";
+import {getNegotiationDAO} from "../utils/DaoFactory";
 import getExceptionMessage from "../utils/exceptions/ApplicationException";
 import Negotiation from "../models/negotiation/Negotiation";
 import DateConverter from "../utils/DateConverter";
 import Bind from "../utils/Bind";
+import {debounce} from "../utils/decorators/Debounce.js";
+import {controller} from "../utils/decorators/Controller.js";
+import {required} from "../utils/Required.js";
+import {bindEvent} from "../utils/decorators/BindEvent.js";
 
+@controller('#date', '#quantity', '#value')
 export default class NegotiationController {
-	constructor() {
-		const $ = document.querySelector.bind(document);
-		this._inputDate = $("#date");
-		this._inputQuantity = $("#quantity");
-		this._inputValue = $("#value");
+	constructor(
+		_inputDate = required('date'),
+		_quantity = required('quantity'),
+		_value = required('value')
+	) {
+		Object.assign({_inputDate, _quantity, _value})
 
 		//	creating a new Proxy with support of fabric
 		this._negotiations = new Bind(
@@ -46,7 +52,8 @@ export default class NegotiationController {
 			)
 			.catch((err) => (this._message.text = err));
 	}
-
+	@bindEvent('submit', '.form')
+	@debounce(1500)
 	async add(event) {
 		try {
 			event.preventDefault();
@@ -89,6 +96,7 @@ export default class NegotiationController {
 		);
 	}
 
+	@bindEvent('click', '#delete-button')
 	async delete() {
 		const dao = await getNegotiationDAO();
 		await dao
@@ -104,11 +112,13 @@ export default class NegotiationController {
 			);
 	}
 
+	@bindEvent('click', '#import-button')
+	@debounce(1500)
 	async importNegotiations() {
 		try {
 			const object = await this._service.getNegotiationsByPeriod();
 			object
-				.filter((newNegotiation) => 
+				.filter((newNegotiation) =>
 					!this._negotiations.toArray()
 						.some((exists) => newNegotiation.equals(exists)))
 				.forEach((negotiation) => this._negotiations.add(negotiation));

@@ -10,30 +10,30 @@
 			href="css/styles.css"
 			media="screen"
 	/>
-	</head>
+</head>
 
-	<body class="container">
-		<h1 class="text-center">Trading</h1>
+<body class="container">
+<h1 class="text-center">Trading</h1>
 
-		<div id="messageView"></div>
+<div id="messageView"></div>
 
-		<form class="form">
-			<div class="form-group mb-2">
-				<label for="date">Date</label>
-				<input
-					type="date"
-					id="date"
-					class="form-control"
-					required
-					autofocus
-					min="2021-01-01"
-				/>
-			</div>
+<form class="form">
+	<div class="form-group mb-2">
+		<label for="date">Date</label>
+		<input
+				type="date"
+				id="date"
+				class="form-control"
+				required
+				autofocus
+				min="2021-01-01"
+		/>
+	</div>
 
-			<div class="form-group mb-2">
-				<label for="quantity">Quantity</label>
-				<input
-					type="number"
+	<div class="form-group mb-2">
+		<label for="quantity">Quantity</label>
+		<input
+				type="number"
 					min="1"
 					step="1"
 					id="quantity"
@@ -75,12 +75,10 @@
 				Delete
 			</button>
 		</div>
-		<br/>
-		<br/>
-		<div id="negotiations"></div>
-		<script src="node_modules/systemjs/dist/system.js"></script>
-		<script type="module">
-			System.import('./app/app.js')
-		</script>
-	</body>
+<br/>
+<br/>
+<div id="negotiations"></div>
+<script src="node_modules/reflect-metadata/Reflect.js"></script>
+<script src="dist/bundle.js"></script>
+</body>
 </html>

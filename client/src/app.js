@@ -1,15 +1,20 @@
 import NegotiationController from "./controllers/NegotiationController";
-import { debounce } from "./utils/Debounce";
+import Negotiation from "./models/negotiation/Negotiation.js";
 
-const ctrl = new NegotiationController(),
-	$ = document.querySelector.bind(document);
+export const ctrl = new NegotiationController();
 
-$(".form").addEventListener("submit", ctrl.add.bind(ctrl));
-$("#button-delete").addEventListener(
-	"click",
-	debounce(() => ctrl.delete.bind(ctrl), 1000)
-);
-$("#import-button").addEventListener(
-	"click",
-	debounce(() => ctrl.importNegotiations.bind(ctrl), 1000)
-);
+const negotiation = new Negotiation(new Date(), 1, 200);
+const headers = new Headers();
+headers.set('Content-Type', 'application/json');
+
+const body = JSON.stringify(negotiation)
+const method = "POST"
+
+const config = {
+	method,
+	headers,
+	body
+};
+
+fetch('http://localhost:3000/negotiations', config)
+	.then(() => console.log('Successfully sent data'));

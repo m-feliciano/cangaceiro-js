@@ -1,6 +1,6 @@
 export default class Negotiation {
 	constructor(
-		_inputDate = required('date'),
+		_date = required('date'),
 		_quantity = required('quantity'),
 		_value = required('value')) {
 		Object.assign(this, { _quantity, _value });

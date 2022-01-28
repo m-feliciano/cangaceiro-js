@@ -1,10 +1,7 @@
 import	'bootstrap/dist/css/bootstrap.css';
 import	'bootstrap/dist/css/bootstrap-theme.css';
 
-import NegotiationController from "./controllers/NegotiationController";
-import Negotiation from "./models/negotiation/Negotiation.js";
-
-export const ctrl = new NegotiationController();
+import Negotiation from "./models/negotiation/Negotiation";
 
 const negotiation = new Negotiation(new Date(), 1, 200);
 const headers = new Headers();
@@ -19,5 +16,6 @@ const config = {
 	body
 };
 
-fetch('http://localhost:3000/negotiations', config)
-	.then(() => console.log('Successfully sent data'));
+const url = 'http://localhost:3000/negotiations';
+
+fetch(url, config).then(() => console.log('Successfully sent data'));

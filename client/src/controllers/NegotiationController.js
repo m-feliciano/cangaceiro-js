@@ -1,5 +1,5 @@
-import NegotiationsView from "../views/NegotiationsView";
-import Negotiations from "../models/negotiation/Negotiations";
+import {NegotiationsView} from "../views/NegotiationsView";
+import {Negotiations} from "../models/negotiation/Negotiations";
 import MessageView from "../views/MessageView";
 import Message from "../models/Message";
 import {getNegotiationDAO} from "../utils/DaoFactory";
@@ -9,20 +9,18 @@ import DateConverter from "../utils/DateConverter";
 import Bind from "../utils/Bind";
 import {debounce} from "../utils/decorators/Debounce.js";
 import {controller} from "../utils/decorators/Controller.js";
-import {required} from "../utils/Required.js";
 import {bindEvent} from "../utils/decorators/BindEvent.js";
 
 @controller('#date', '#quantity', '#value')
-export default class NegotiationController {
-	constructor(_inputDate, _quantity , _value) {
-		Object.assign(this, {_inputDate, _quantity, _value})
+export class NegotiationController {
+	constructor(_date, _quantity , _value) {
+		Object.assign(this, {_date, _quantity, _value})
 
 		//	creating a new Proxy with support of fabric
 		this._negotiations = new Bind(
 			new Negotiations(),
 			new NegotiationsView("#negotiations"),
-			"add",
-			"clear"
+			"add", "clear"
 		);
 
 		this._message = new Bind(
@@ -37,13 +35,9 @@ export default class NegotiationController {
 	async _init() {
 		try {
 		const dao = await getNegotiationDAO();
-		await dao
-			.listAll()
-			.then((negotiations) =>
-				negotiations.forEach((negotiation) =>
-					this._negotiations.add(negotiation)
-				)
-			)
+		const negotiations = dao.listAll();
+		negotiations.forEach(
+			(negotiation) => this._negotiations.add(negotiation))
 		} catch(err){
 			this._message.text = getExceptionMessage(err);
 		}
@@ -60,7 +54,7 @@ export default class NegotiationController {
 			await dao
 				.add(negotiation)
 				.then(() => {
-					this._negotiations.add(this._createNegotiation());
+					this._negotiations.add(negotiation);
 					this._message.text = "Trading successfully added";
 					this._clearForm();
 				})
@@ -70,17 +64,17 @@ export default class NegotiationController {
 	}
 
 	_clearForm() {
-		this._inputDate.value = "";
-		this._inputQuantity.value = 1;
-		this._inputValue.value = 0.0;
-		this._inputDate.focus();
+		this._date.value = "";
+		this._quantity.value = 1;
+		this._value.value = 0.0;
+		this._date.focus();
 	}
 
 	_createNegotiation() {
 		return new Negotiation(
-			DateConverter.toDate(this._inputDate.value),
-			parseInt(this._inputQuantity.value),
-			parseFloat(this._inputValue.value)
+			DateConverter.toDate(this._date.value),
+			parseInt(this._quantity.value),
+			parseFloat(this._value.value)
 		);
 	}
 
@@ -107,7 +101,7 @@ export default class NegotiationController {
 
 			const NegotiationService = await import('../services/NegotiationService')
 
-			const service = new NegotiationService()
+			const service = new NegotiationService();
 
 			const object = await service.getNegotiationsByPeriod();
 			console.log(object);

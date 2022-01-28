@@ -1,6 +1,8 @@
 export function controller(...selectors) {
-    const elements = selectors.map(selector =>
-        document.querySelector(selector));
+    const elements = selectors.map(selector => {
+        console.log(selector);
+        document.querySelector(selector)
+    });
 
     return function (constructor) {
         const defaultContructor = constructor;

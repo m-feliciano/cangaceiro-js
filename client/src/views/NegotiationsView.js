@@ -1,6 +1,7 @@
 import View from "./View";
+import DateConverter from "../utils/DateConverter";
 
-export default class NegotiationsView extends View {
+export class NegotiationsView extends View {
 	template(model) {
 		return `
         <table class="table table-hover table-bordered">

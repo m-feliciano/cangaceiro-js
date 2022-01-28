@@ -3,7 +3,7 @@ import Negotiation from "../models/negotiation/Negotiation";
 import ApplicationException from "../utils/exceptions/ApplicationException";
 
 
-export default class NegotiationService {
+export class NegotiationService {
 	constructor() {
 		this._http = new HttpService();
 		this._baseUrl = "http://localhost:3000/negotiations";
@@ -38,8 +38,7 @@ export default class NegotiationService {
 
 	_instantiateNegotiation(data) {
 		return data.map(
-			(obj) =>
-				new Negotiation(new Date(obj.date), obj.quantity, obj.value)
+			(obj) => new Negotiation(new Date(obj.date), obj.quantity, obj.value)
 		);
 	}
 
@@ -57,6 +56,6 @@ export default class NegotiationService {
 		} catch(err) {
 				console.log(err);
 				throw new ApplicationException("Unable to get negotiations by period");
-			};
+			}
 	}
 }

@@ -1,4 +1,4 @@
-export default class Negotiations {
+export class Negotiations {
 	constructor() {
 		this._negotiations = [];
 		Object.freeze(this);
@@ -12,8 +12,8 @@ export default class Negotiations {
 	}
 
 	get volumeTotal() {
-		return this._negotiations.reduce(
-			(actual, y) => (actual += y.volume), 0);
+		return this._negotiations
+			.reduce((actual, y) => (actual + y.volume), 0);
 	}
 	clear() {
 		this._negotiations.length = 0;

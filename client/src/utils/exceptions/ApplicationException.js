@@ -5,11 +5,10 @@ export default class ApplicationException extends Error {
 	}
 }
 
-const exception = ApplicationException;
 export function isApplicationException(err) {
 	return (
-		err instanceof exception ||
-		Object.getPrototypeOf(err) instanceof exception
+		err instanceof ApplicationException ||
+		Object.getPrototypeOf(err) instanceof ApplicationException
 	);
 }
 

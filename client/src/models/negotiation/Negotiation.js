@@ -1,5 +1,8 @@
 export default class Negotiation {
-	constructor(_date, _quantity, _value) {
+	constructor(
+		_inputDate = required('date'),
+		_quantity = required('quantity'),
+		_value = required('value')) {
 		Object.assign(this, { _quantity, _value });
 		this._date = new Date(_date.getTime());
 		Object.freeze(this);
@@ -22,6 +25,6 @@ export default class Negotiation {
 	}
 
 	equals(negotiation) {
-		return JSON.stringify(this) === JSON.stringify(negotiation);
+		return JSON.stringify(this) == JSON.stringify(negotiation);
 	}
 }

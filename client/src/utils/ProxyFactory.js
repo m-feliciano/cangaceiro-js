@@ -22,6 +22,6 @@ export default class ProxyFactory {
 	}
 
 	static _isFunction(fn) {
-		return typeof fn === typeof Function;
+		return typeof fn == typeof Function;
 	}
 }

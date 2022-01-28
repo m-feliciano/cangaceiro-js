@@ -6,14 +6,14 @@ export function controller(...selectors) {
         const defaultContructor = constructor;
 
         const newConstructor = function () {
+            
             const instance = new defaultContructor(...elements);
             Object.getOwnPropertyNames(defaultContructor.prototype)
                 .forEach(property => {
                     if (Reflect.hasMetadata('bindEvent', instance, property)) {
                         associateEvent(instance,
-                            Reflect.getMetadata('bindEvent', instance,
-                                property
-                            ));
+                            Reflect.getMetadata('bindEvent', instance, property
+                        ));
                     }
                 })
         }
@@ -26,9 +26,9 @@ export function controller(...selectors) {
 
 function associateEvent(instance, metadata) {
     document
-        .querySelector(metadata.selector)
-        .addEventListener(metadata.event, event => {
-            if (metadata.prevent) event.preventDefault();
-            instance[metadata.propertyKey](event);
-        });
+    .querySelector(metadata.selector)
+    .addEventListener(metadata.event, event => {  
+        if(metadata.prevent) event.preventDefault();
+        instance[metadata.propertyKey](event);
+    });
 }

@@ -1,3 +1,3 @@
-export function required(parametro) {
-    throw new Error(`${parametro}	is a param required`);
+export function required(param) {
+    throw new Error(`${param} is a param required`);
 }

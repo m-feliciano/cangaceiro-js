@@ -2,9 +2,8 @@ import {ConnectionFactory} from "./ConnectionFactory";
 import NegotiationDAO from "../models/negotiation/NegotiationDAO";
 
 export async function getNegotiationDAO() {
-	return await ConnectionFactory.getConnection().then(
-		(conn) => new NegotiationDAO(conn)
-	);
+	let conn = await ConnectionFactory.getConnection();
+    return new NegotiationDAO(conn);
 }
 
 // ON CONSOLE

@@ -2,7 +2,6 @@ import NegotiationsView from "../views/NegotiationsView";
 import Negotiations from "../models/negotiation/Negotiations";
 import MessageView from "../views/MessageView";
 import Message from "../models/Message";
-import NegotiationService from "../services/NegotiationService";
 import {getNegotiationDAO} from "../utils/DaoFactory";
 import getExceptionMessage from "../utils/exceptions/ApplicationException";
 import Negotiation from "../models/negotiation/Negotiation";
@@ -15,12 +14,8 @@ import {bindEvent} from "../utils/decorators/BindEvent.js";
 
 @controller('#date', '#quantity', '#value')
 export default class NegotiationController {
-	constructor(
-		_inputDate = required('date'),
-		_quantity = required('quantity'),
-		_value = required('value')
-	) {
-		Object.assign({_inputDate, _quantity, _value})
+	constructor(_inputDate, _quantity , _value) {
+		Object.assign(this, {_inputDate, _quantity, _value})
 
 		//	creating a new Proxy with support of fabric
 		this._negotiations = new Bind(
@@ -36,12 +31,11 @@ export default class NegotiationController {
 			"text"
 		);
 
-		this._service = new NegotiationService();
-
 		this._init();
 	}
 
 	async _init() {
+		try {
 		const dao = await getNegotiationDAO();
 		await dao
 			.listAll()
@@ -50,10 +44,12 @@ export default class NegotiationController {
 					this._negotiations.add(negotiation)
 				)
 			)
-			.catch((err) => (this._message.text = err));
+		} catch(err){
+			this._message.text = getExceptionMessage(err);
+		}
 	}
 	@bindEvent('submit', '.form')
-	@debounce(1500)
+	@debounce()
 	async add(event) {
 		try {
 			event.preventDefault();
@@ -68,16 +64,8 @@ export default class NegotiationController {
 					this._message.text = "Trading successfully added";
 					this._clearForm();
 				})
-				.catch((err) => (this._message.text = err));
 		} catch (err) {
-			console.log(err);
-
-			if (err instanceof DateInvalidException) {
-				this._message.text = err.message;
-			} else {
-				this._message.text =
-					"An unexpected error has occurred you. Contact support ";
-			}
+			this._message.text = getExceptionMessage(err);
 		}
 	}
 
@@ -113,14 +101,20 @@ export default class NegotiationController {
 	}
 
 	@bindEvent('click', '#import-button')
-	@debounce(1500)
+	@debounce()
 	async importNegotiations() {
 		try {
-			const object = await this._service.getNegotiationsByPeriod();
-			object
-				.filter((newNegotiation) =>
+
+			const NegotiationService = await import('../services/NegotiationService')
+
+			const service = new NegotiationService()
+
+			const object = await service.getNegotiationsByPeriod();
+			console.log(object);
+			
+			object.filter((newNegotiation) =>
 					!this._negotiations.toArray()
-						.some((exists) => newNegotiation.equals(exists)))
+					.some((exists) => newNegotiation.equals(exists)))
 				.forEach((negotiation) => this._negotiations.add(negotiation));
 
 			this._message.text = "Successfully imported negotiations by period";

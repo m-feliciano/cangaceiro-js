@@ -64,19 +64,3 @@ export default class NegotiationDAO {
 		});
 	}
 }
-
-// // test on console
-
-// // Save
-// ConnectionFactory.getConnection()
-// 	.then((conn) => new NegotiationDAO(conn))
-// 	.then((dao) => dao.add(negotiation))
-// 	.then(() => console.log("Successfully saved negotiation!"))
-// 	.catch((err) => console.log(err));
-
-// // List
-// ConnectionFactory.getConnection()
-// 	.then((conn) => new NegotiationDAO(conn))
-// 	.then((dao) => dao.listAll())
-// 	.then((n) => console.log(n))
-// 	.catch((err) => console.log(err));
